@@ -50,7 +50,6 @@ techdocs:
 auth:
   environment: development
   providers:
-    # See https://backstage.io/docs/auth/guest/provider
     guest: {}
     github:
       development:
@@ -58,8 +57,6 @@ auth:
         clientSecret: 1deb6be944f18aa350598c7e5907d14bf9082ac2
         signIn:
           resolvers:
-            # Matches the GitHub username with the Backstage user entity name.
-            # See https://backstage.io/docs/auth/github/provider#resolvers for more resolvers.
             - resolver: usernameMatchingUserEntityName
 
 scaffolder:
@@ -76,19 +73,30 @@ catalog:
         - API
         - Resource
         - Location
+        - Template
+  providers:
+    github:
+      # Define a unique provider ID
+      myProvider:
+        # Replace with your individual account name
+        organization: 'ArpitPandeyTalentica'
+        # Search for all YAML files in the repository
+        catalogPath: '/api/*.yaml'
+        filters:
+          branch: 'main' # Ensure this matches your branch name
+          repository: 'BackstageAPISample' # Include the specific repository name
+        schedule:
+          frequency: { minutes: 30 }
+          timeout: { minutes: 5 }
+
   locations:
-    # Local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
       target: ../../examples/entities.yaml
-
-    # Local example template
     - type: file
       target: ../../examples/template/template.yaml
       rules:
         - allow:
             - Template
-
-    # Local example organizational data
     - type: file
       target: ../../examples/org.yaml
       rules:
@@ -97,5 +105,4 @@ catalog:
             - Group
 
 permission:
-  # Setting this to `false` will disable permissions
   enabled: true
