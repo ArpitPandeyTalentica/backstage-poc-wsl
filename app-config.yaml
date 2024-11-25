@@ -16,14 +16,10 @@ backend:
       - "https:"
   cors:
     origin: http://localhost:3000
-    methods:
-      - GET
-      - HEAD
-      - PATCH
-      - POST
-      - PUT
-      - DELETE
+    methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
+  server:
+    port: 7008
 
 database:
   client: pg
@@ -38,7 +34,11 @@ integrations:
     - host: github.com
       token: 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
 
-proxy: {}
+proxy:
+  endpoints:
+    '/WeatherForecast':
+      target: 'http://localhost:7008/api/weather'
+      changeOrigin: true   
 
 techdocs:
   builder: 'local' # Alternatives - 'external'

@@ -1,12 +1,19 @@
-/*
- * Hi!
- *
- * Note that this is an EXAMPLE Backstage backend. Please check the README.
- *
- * Happy hacking!
- */
-
 import { createBackend } from '@backstage/backend-defaults';
+import weatherApi from './api/weatherApi';
+import cors from 'cors';
+import express from 'express';
+
+const app = express();
+
+app.use(cors({ origin: '*' }));
+app.use('/api/weather', weatherApi);
+
+console.log('Using PORT:', process.env.PORT);
+const port = process.env.PORT || 7008; // Fallback to a default port
+
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
 
 const backend = createBackend();
 
